@@ -17,4 +17,12 @@ class TaskController extends Controller
 
         return $task->toJson();
     }
+    
+    public function markAsCompleted(Task $task)
+      {
+        $task->is_completed = true;
+        $task->update();
+
+        return response()->json('Task updated!');
+      }
 }
