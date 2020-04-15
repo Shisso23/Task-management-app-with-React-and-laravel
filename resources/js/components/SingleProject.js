@@ -13,6 +13,7 @@ import axios from 'axios'
         this.handleAddNewTask = this.handleAddNewTask.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
+        //this.handleMarkTaskAsCompleted=this.handleMarkTaskAsCompleted.bind(this)
       }
 
       handleFieldChange (event) {
@@ -61,6 +62,16 @@ import axios from 'axios'
         }
       }
 
+      handleMarkTaskAsCompleted (taskId) {
+        axios.put(`/api/tasks/${taskId}`).then(response => {
+          this.setState(prevState => ({
+            tasks: prevState.tasks.filter(task => {
+              return task.id !== taskId
+            })
+          }))
+        })
+      }
+
       handleMarkProjectAsCompleted () {
         const { history } = this.props
   
@@ -98,6 +109,21 @@ import axios from 'axios'
 
                     <hr />
 
+                    <form onSubmit={this.handleAddNewTask}>
+                        <div className='input-group'>
+                            <input type='text' name='title'
+                                className={`form-control ${this.hasErrorFor('title') ? 'is-invalid' : ''}`}
+                                placeholder='Task title'
+                                value={this.state.title}
+                                onChange={this.handleFieldChange}
+                            />
+                            <div className='input-group-append'>
+                                <button className='btn btn-primary'>Add</button>
+                            </div>
+                            {this.renderErrorFor('title')}
+                        </div>
+                    </form>
+
                     <ul className='list-group mt-3'>
                       {tasks.map(task => (
                         <li
@@ -106,7 +132,8 @@ import axios from 'axios'
                         >
                           {task.title}
 
-                          <button className='btn btn-primary btn-sm'>
+                          <button className='btn btn-primary btn-sm' 
+                            onClick={this.handleMarkTaskAsCompleted.bind(this,task.id)}>
                             Mark as completed
                           </button>
                         </li>
