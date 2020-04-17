@@ -69997,7 +69997,7 @@ var App = /*#__PURE__*/function (_Component) {
         path: "/create",
         component: _NewProject__WEBPACK_IMPORTED_MODULE_4__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-        path: "/:id",
+        path: "/id",
         component: _SingleProject__WEBPACK_IMPORTED_MODULE_6__["default"]
       }))));
     }
@@ -70359,12 +70359,25 @@ var SingleProject = /*#__PURE__*/function (_Component) {
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleAddNewTask = _this.handleAddNewTask.bind(_assertThisInitialized(_this));
     _this.hasErrorFor = _this.hasErrorFor.bind(_assertThisInitialized(_this));
-    _this.renderErrorFor = _this.renderErrorFor.bind(_assertThisInitialized(_this)); //this.handleMarkTaskAsCompleted=this.handleMarkTaskAsCompleted.bind(this)
-
+    _this.renderErrorFor = _this.renderErrorFor.bind(_assertThisInitialized(_this));
+    _this.handleMarkTaskAsCompleted = _this.handleMarkTaskAsCompleted.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(SingleProject, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var projectId = this.props.match.params.id;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/projects/".concat(projectId)).then(function (response) {
+        _this2.setState({
+          project: response.data,
+          tasks: response.data.tasks
+        });
+      });
+    }
+  }, {
     key: "handleFieldChange",
     value: function handleFieldChange(event) {
       this.setState({
@@ -70374,7 +70387,7 @@ var SingleProject = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleAddNewTask",
     value: function handleAddNewTask(event) {
-      var _this2 = this;
+      var _this3 = this;
 
       event.preventDefault();
       var task = {
@@ -70383,18 +70396,18 @@ var SingleProject = /*#__PURE__*/function (_Component) {
       };
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/tasks', task).then(function (response) {
         // clear form input
-        _this2.setState({
+        _this3.setState({
           title: ''
         }); // add new task to list of tasks
 
 
-        _this2.setState(function (prevState) {
+        _this3.setState(function (prevState) {
           return {
             tasks: prevState.tasks.concat(response.data)
           };
         });
       })["catch"](function (error) {
-        _this2.setState({
+        _this3.setState({
           errors: error.response.data.errors
         });
       });
@@ -70416,10 +70429,10 @@ var SingleProject = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleMarkTaskAsCompleted",
     value: function handleMarkTaskAsCompleted(taskId) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/tasks/".concat(taskId)).then(function (response) {
-        _this3.setState(function (prevState) {
+        _this4.setState(function (prevState) {
           return {
             tasks: prevState.tasks.filter(function (task) {
               return task.id !== taskId;
@@ -70434,19 +70447,6 @@ var SingleProject = /*#__PURE__*/function (_Component) {
       var history = this.props.history;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/projects/".concat(this.state.project.id)).then(function (response) {
         return history.push('/');
-      });
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this4 = this;
-
-      var projectId = this.props.match.params.id;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/projects/".concat(projectId)).then(function (response) {
-        _this4.setState({
-          project: response.data,
-          tasks: response.data.tasks
-        });
       });
     }
   }, {

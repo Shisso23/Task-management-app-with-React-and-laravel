@@ -13,7 +13,18 @@ import axios from 'axios'
         this.handleAddNewTask = this.handleAddNewTask.bind(this)
         this.hasErrorFor = this.hasErrorFor.bind(this)
         this.renderErrorFor = this.renderErrorFor.bind(this)
-        //this.handleMarkTaskAsCompleted=this.handleMarkTaskAsCompleted.bind(this)
+        this.handleMarkTaskAsCompleted=this.handleMarkTaskAsCompleted.bind(this)
+      }
+
+      componentDidMount () {
+        const projectId = this.props.match.params.id
+
+        axios.get(`/api/projects/${projectId}`).then(response => {
+          this.setState({
+            project: response.data,
+            tasks: response.data.tasks
+          })
+        })
       }
 
       handleFieldChange (event) {
@@ -79,16 +90,7 @@ import axios from 'axios'
           .then(response => history.push('/'))
       }
 
-      componentDidMount () {
-        const projectId = this.props.match.params.id
-
-        axios.get(`/api/projects/${projectId}`).then(response => {
-          this.setState({
-            project: response.data,
-            tasks: response.data.tasks
-          })
-        })
-      }
+      
 
       render () {
         const { project, tasks } = this.state

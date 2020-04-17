@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Project;
+
 class ProjectController extends Controller
 {
     public function index()
@@ -30,7 +32,7 @@ class ProjectController extends Controller
           'description' => $validatedData['description'],
         ]);
 
-        return response()->json('Project created!');
+        return response()->toJson('Project created!');
       }
 
       public function show($id)
