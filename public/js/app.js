@@ -69997,7 +69997,7 @@ var App = /*#__PURE__*/function (_Component) {
         path: "/create",
         component: _NewProject__WEBPACK_IMPORTED_MODULE_4__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-        path: "/id",
+        path: "/:id",
         component: _SingleProject__WEBPACK_IMPORTED_MODULE_6__["default"]
       }))));
     }
